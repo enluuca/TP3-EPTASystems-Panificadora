@@ -1,0 +1,91 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title= title
+        link(rel="stylesheet" href="/css/style.css")
+        style.
+            /* Estilos específicos complementarios para las tarjetas de pedidos */
+            .grid-pedidos {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+            .tag-estado {
+                display: inline-block;
+                padding: 3px 8px;
+                border-radius: 4px;
+                font-size: 0.85em;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+            .estado-pendiente { background-color: #fef3c7; color: #d97706; }
+            .estado-en-produccion { background-color: #e0f2fe; color: #0369a1; }
+            .estado-despachado { background-color: #e0e7ff; color: #4338ca; }
+            .estado-entregado { background-color: #dcfce7; color: #15803d; }
+    body
+        header
+            div.nav-container
+                div
+                    a(href="/inicio" style="font-weight: 700; color: white; text-decoration: none;")  Inicio
+                if usuario
+                    span(style="color: #f1f5f9; font-weight: 500; font-size: 0.95rem;") 👤 Operario: #{usuario}
+            h1 La Espiga de Oro S.R.L.
+            h2 Gestión Central de Pedidos
+
+        main(style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;")
+            section.actions(style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;")
+                h3(style="margin: 0; color: var(--primary-color); font-weight: 600;") Monitoreo de Órdenes Activas
+                a.btn.btn-accent(href="/pedidos/nuevo" style="font-weight: 600;")  Cargar Nuevo Pedido
+
+            hr(style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 2rem;")
+
+            section.listado-pedidos
+                if pedidos && pedidos.length > 0
+                    div.grid-pedidos
+                        each p in pedidos
+                            article.card-container(style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 15px;")
+                                //- Encabezado de la Tarjeta
+                                div.pedido-header(style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 0.85rem;")
+                                    span(style="color: var(--text-muted); font-weight: 500;") ID: 
+                                        span(style="font-family: monospace; color: var(--text-main); font-weight: bold;") #{p._id.toString().substring(18)}
+                                    span(style="color: var(--text-muted);")  #{p.fecha ? p.fecha.toLocaleDateString('es-AR') : 'Sin fecha'}
+                                
+                                //- Información del Cliente y Estado
+                                div.pedido-info
+                                    p(style="margin: 0 0 8px 0; font-size: 1.1rem; color: var(--primary-color); font-weight: 600;") 
+                                        | #{p.sucursal ? p.sucursal.nombre : 'Sin asignar'}
+                                    div(style="margin-top: 8px;")
+                                        span(class=`tag-estado estado-${p.estado.toLowerCase().replace(/ /g, '-')}`) #{p.estado}
+                                
+                                //- Detalle de Productos
+                                div.pedido-detalle(style="background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); flex-grow: 1;")
+                                    p(style="margin: 0 0 6px 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 700;") Productos solicitados:
+                                    ul(style="margin: 0; padding-left: 20px; color: var(--text-main); font-size: 0.95rem;")
+                                        each prod in p.productos
+                                            li(style="margin-bottom: 4px;") #{prod.nombre}
+
+                                //- Acciones de Cambio de Estado
+                                div.pedido-actions(style="border-top: 1px dashed var(--border-color); padding-top: 12px;")
+                                    form(action=`/pedidos/actualizar/${p._id}`, method="POST" style="display: flex; flex-direction: column; gap: 8px;")
+                                        label(style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);") Cambiar Estado: 
+                                        div(style="display: flex; gap: 6px;")
+                                            select.form-control(name="nuevoEstado" style="padding: 6px 10px; font-size: 0.85rem; flex-grow: 1;")
+                                                option(value="Pendiente" selected=p.estado==="Pendiente") Pendiente
+                                                option(value="En Producción" selected=p.estado==="En Producción") En Producción
+                                                option(value="Despachado" selected=p.estado==="Despachado") Despachado
+                                                option(value="Entregado" selected=p.estado==="Entregado") Entregado
+                                            button.btn.btn-primary(type="submit" style="padding: 6px 12px; font-size: 0.85rem; font-weight: 600;") Actualizar
+
+                                //- Zona de Peligro (Eliminar)
+                                div.pedido-danger-zone(style="text-align: right; margin-top: 5px;")
+                                    form(action=`/pedidos/eliminar/${p._id}`, method="POST" onsubmit="return confirm('¿Estás seguro de que querés eliminar este pedido de forma permanente? Esta acción no se puede deshacer.')")
+                                        button(type="submit" style="background: none; border: none; color: var(--danger-color); font-size: 0.85rem; font-weight: 500; cursor: pointer; padding: 4px; text-decoration: underline;") 🗑️ Eliminar Orden
+                else
+                    div.card-container(style="text-align: center; padding: 3rem; border-style: dashed; border-width: 2px;")
+                        p(style="color: var(--text-muted); font-size: 1.1rem; margin: 0;")  No hay pedidos registrados en el sistema actualmente.
+
+        footer(style="text-align: center; padding: 3rem 0; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;")
+            p &copy; 2026 La Espiga de Oro - Sistema de Gestión Industrial

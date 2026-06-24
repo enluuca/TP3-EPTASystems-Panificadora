@@ -1,0 +1,45 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title Inicio - La Espiga de Oro
+        link(rel="stylesheet" href="/css/style.css")
+    body
+        header
+            div.nav-container
+                div
+                    a(href="/inicio" style="font-weight: 700; color: white; text-decoration: none;")  Panel Central
+                if usuario
+                    span(style="color: #f1f5f9; font-weight: 500; font-size: 0.95rem;") 👤 Operario: #{usuario}
+            h1 La Espiga de Oro S.R.L.
+            h2 Sistema Central de Gestión
+
+        main(style="display: flex; justify-content: center; padding: 3rem 1rem;")
+            div.card-container(style="width: 100%; max-width: 500px; text-align: center;")
+                h3(style="margin-top: 0; color: var(--primary-color); font-weight: 600; font-size: 1.4rem;") ¿Qué acción desea realizar?
+                p(style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;") Seleccione un módulo operativo para continuar.
+                
+                // --- MÓDULO DE PEDIDOS ---
+                div(style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); text-align: left;")
+                    h4(style="margin: 0 0 12px 0; color: var(--primary-color); font-size: 1.05rem; font-weight: 600;")  Gestión de Pedidos
+                    div(style="display: flex; flex-direction: column; gap: 10px;")
+                        a.btn.btn-primary(href="/pedidos")  Ver Tablero de Pedidos
+                        a.btn.btn-accent(href="/pedidos/nuevo")  Cargar Nuevo Pedido
+
+                // --- MÓDULO DE CLIENTES ---
+                div(style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); text-align: left;")
+                    h4(style="margin: 0 0 12px 0; color: var(--primary-color); font-size: 1.05rem; font-weight: 600;")  Módulo de Clientes (Sucursales)
+                    div(style="display: flex; flex-direction: column; gap: 10px;")
+                        a.btn.btn-primary(href="/clientes")  Ver Listado de Clientes
+                        a.btn.btn-accent(href="/clientes/nuevo")  Dar de Alta Cliente
+
+                // --- MÓDULO DE PRODUCTOS ---
+                div(style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); text-align: left;")
+                    h4(style="margin: 0 0 12px 0; color: var(--primary-color); font-size: 1.05rem; font-weight: 600;")  Catálogo de Productos
+                    div(style="display: flex; flex-direction: column; gap: 10px;")
+                        a.btn.btn-primary(href="/productos")  Ver Catálogo Completo
+                        a.btn.btn-accent(href="/productos/nuevo")  Agregar Nuevo Producto
+                
+        footer(style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.85rem;")
+            p &copy; 2026 EPTASystems - Trabajo Práctico Back End

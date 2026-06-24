@@ -1,0 +1,50 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title= title
+        link(rel="stylesheet" href="/css/style.css")
+    body
+        header
+            div.nav-container
+                div
+                    a(href="/inicio" style="font-weight: 700; color: white; text-decoration: none;")  Inicio
+                if usuario
+                    span(style="color: #f1f5f9; font-weight: 500; font-size: 0.95rem;") 👤 Operario: #{usuario}
+            h1 La Espiga de Oro S.R.L.
+            h2= title
+
+        main(style="display: flex; flex-direction: column; align-items: center; padding: 3rem 1rem;")
+            section.card-container(style="width: 100%; max-width: 500px;")
+                h3(style="margin-top: 0; color: var(--primary-color); font-weight: 600; margin-bottom: 1.5rem;") Alta de Nueva Sucursal
+                
+                if error
+                    div.pedido-danger-zone(style="background-color: #fdf2f2; border-left: 4px solid var(--danger-color); padding: 10px 15px; border-radius: 4px; margin-bottom: 1.5rem;")
+                        p(style="margin: 0; color: var(--danger-color); font-size: 0.9rem; font-weight: 500;")= error
+                
+                //- Formulario que procesa el alta del cliente
+                form(action="/clientes/nuevo" method="POST")
+                    
+                    //- Nombre de la Sucursal
+                    div(style="margin-bottom: 1.25rem;")
+                        label(for="nombre" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--primary-color);") Nombre de la Sucursal / Cliente:
+                        input#nombre.form-control(type="text" name="nombre" placeholder="Ej: Sucursal Avellaneda Centro" required)
+                    
+                    //- Dirección de Entrega
+                    div(style="margin-bottom: 1.25rem;")
+                        label(for="direccion" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--primary-color);") Dirección de Entrega:
+                        input#direccion.form-control(type="text" name="direccion" placeholder="Ej: Av. Mitre 1234" required)
+                    
+                    //- Teléfono de Contacto
+                    div(style="margin-bottom: 2rem;")
+                        label(for="telefono" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: var(--primary-color);") Teléfono de Contacto:
+                        input#telefono.form-control(type="text" name="telefono" placeholder="Ej: 11 4321-5678")
+                    
+                    //- Botonera de Acciones
+                    div(style="display: flex; align-items: center; gap: 15px; margin-top: 1.5rem;")
+                        button.btn.btn-accent(type="submit" style="flex: 2; font-weight: 600; padding: 12px;")  Guardar Cliente
+                        a.btn(href="/clientes" style="flex: 1; padding: 12px; background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main); text-align: center; font-weight: 500;") Cancelar
+
+        footer(style="text-align: center; padding: 3rem 0; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;")
+            p &copy; 2026 EPTASystems - Trabajo Práctico Back End

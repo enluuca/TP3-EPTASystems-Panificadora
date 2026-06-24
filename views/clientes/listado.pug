@@ -1,0 +1,36 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        title #{title}
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        header
+            div(style="margin-bottom: 15px; background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between;")
+                div
+                    a(href="/inicio" style="font-weight: bold; margin-right: 15px; color: #3498db; text-decoration: none;") Inicio
+                span(style="color: #2c3e50; font-weight: 500;") 👤 Usuario: #{usuario}
+            h1 Clientes (Sucursales)
+            h2 Nómina Oficial de Puntos de Venta
+
+        main(style="max-width: 800px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);")
+            div(style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;")
+                h3 Lista de Sucursales Activas
+                a.btn-primary(href="/clientes/nuevo" style="background-color: #1abc9c; margin: 0; padding: 8px 15px;") ➕ Nuevo Cliente
+
+            if clientes.length > 0
+                table(style="width: 100%; border-collapse: collapse; text-align: left;")
+                    thead
+                        tr(style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;")
+                            th(style="padding: 12px;") Nombre / Razón Social
+                            th(style="padding: 12px;") Dirección de Entrega
+                    tbody
+                        each cliente in clientes
+                            tr(style="border-bottom: 1px solid #dee2e6;")
+                                td(style="padding: 12px; font-weight: bold; color: #2c3e50;") #{cliente.nombre}
+                                td(style="padding: 12px; color: #7f8c8d;") #{cliente.direccion}
+            else
+                p(style="color: #e74c3c; text-align: center; font-weight: bold;") No hay clientes registrados en el sistema.
+
+        footer(style="text-align: center; margin-top: 50px; color: #7f8c8d;")
+            p &copy; 2026 EPTASystems - Trabajo Práctico Back End

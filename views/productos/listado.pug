@@ -1,0 +1,45 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title= title
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        header
+            div.nav-container
+                div
+                    a(href="/inicio" style="font-weight: 700; color: white; text-decoration: none;")  Inicio
+                if usuario
+                    span(style="color: #f1f5f9; font-weight: 500; font-size: 0.95rem;") 👤 Operario: #{usuario}
+            h1 Lista de Precios y Productos
+            h2 Catálogo Oficial Panificadora
+
+        main(style="max-width: 900px; margin: 0 auto; padding: 3rem 1rem;")
+            div.card-container
+                div(style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;")
+                    h3(style="margin: 0; color: var(--primary-color); font-weight: 600; font-size: 1.3rem;") Artículos Disponibles
+                    a.btn.btn-accent(href="/productos/nuevo" style="font-size: 0.9rem; padding: 8px 15px; font-weight: 600;") ➕ Nuevo Producto
+
+                //- Controlamos de manera segura que la variable exista antes de medir su longitud
+                if productos && productos.length > 0
+                    div(style="overflow-x: auto;")
+                        table
+                            thead
+                                tr
+                                    th Descripción
+                                    th Categoría
+                                    th(style="text-align: right;") Precio Unitario
+                            tbody
+                                each producto in productos
+                                    tr
+                                        td(style="font-weight: 600; color: var(--primary-color);") #{producto.nombre}
+                                        td
+                                            span(style="background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;") #{producto.categoria || 'General'}
+                                        td(style="text-align: right; font-weight: 700; color: var(--success-color); font-size: 1.05rem;") $#{producto.precio.toLocaleString('es-AR')}
+                else
+                    div(style="text-align: center; padding: 2rem 0;")
+                        p(style="color: var(--danger-color); font-weight: 600; margin: 0;")  No hay productos cargados en el catálogo actualmente.
+
+        footer(style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 4rem;")
+            p &copy; 2026 EPTASystems - Trabajo Práctico Back End
