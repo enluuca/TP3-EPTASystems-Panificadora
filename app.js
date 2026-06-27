@@ -93,3 +93,10 @@ app.use((req, res, next) => {
     // Si ya está logueado, le muestras una vista de "Página no encontrada" amigable
     res.status(404).render('404', { mensaje: 'La página no existe' });
 });
+
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+}
+
+module.exports = app; // <--- ESTO es lo que necesita Vercel
