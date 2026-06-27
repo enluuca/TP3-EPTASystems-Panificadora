@@ -83,3 +83,13 @@ app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Servidor corriendo de forma segura en http://localhost:${PORT}`);
 });
+
+
+app.use((req, res, next) => {
+    // Si el usuario no está logueado, lo mandas al login
+    if (!req.session.usuario) {
+        return res.redirect('/login');
+    }
+    // Si ya está logueado, le muestras una vista de "Página no encontrada" amigable
+    res.status(404).render('404', { mensaje: 'La página no existe' });
+});

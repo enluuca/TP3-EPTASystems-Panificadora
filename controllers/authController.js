@@ -73,3 +73,17 @@ exports.postLogin = catchAsync(async (req, res, next) => {
 
     res.redirect('/inicio');
 });
+// Cerrar sesión
+exports.logout = (req, res) => {
+    // 1. Destruimos la sesión
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error al cerrar sesión:", err);
+            return res.redirect('/'); 
+        }
+        // 2. Limpiamos la cookie de conexión
+        res.clearCookie('connect.sid'); 
+        // 3. Redirigimos al Login
+        return res.redirect('/login');
+    });
+};
